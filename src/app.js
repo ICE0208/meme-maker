@@ -9,8 +9,9 @@ const dpr = window.devicePixelRatio;
 canvas.width = width * dpr;
 canvas.height = height * dpr;
 const ctx = canvas.getContext("2d");
-
-ctx.lineWidth = 2;
+// set default lineWidth
+const lineWidth = document.getElementById("line-width");
+ctx.lineWidth = lineWidth.value;
 
 const colors = [
   "#ff3838",
@@ -37,11 +38,17 @@ function onMove(event) {
 function startPainting() {
   isPainting = true;
 }
-function cancelPainting() {
+function finishPainting() {
   isPainting = false;
+  ctx.beginPath();
+}
+function onLineWidthChange(event) {
+  ctx.lineWidth = event.target.value;
 }
 
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", startPainting);
-canvas.addEventListener("mouseup", cancelPainting);
-canvas.addEventListener("mouseleave", cancelPainting);
+canvas.addEventListener("mouseup", finishPainting);
+canvas.addEventListener("mouseleave", finishPainting);
+
+lineWidth.addEventListener("change", onLineWidthChange);
