@@ -1,29 +1,20 @@
 // Canvas Setup
+const canvas = document.querySelector("canvas");
+const lineWidth = document.getElementById("line-width");
+const color = document.getElementById("color");
+const colorOptions = Array.from(
+  document.getElementsByClassName("color-option")
+);
+
 const width = 800;
 const height = 800;
-const canvas = document.querySelector("canvas");
-canvas.style.width = `${width}px`;
-canvas.style.height = `${height}px`;
-// 메모리에 실제 크기 설정 (픽셀 밀도를 고려하여 크기 조정)
 const dpr = window.devicePixelRatio;
+
 canvas.width = width * dpr;
 canvas.height = height * dpr;
-const ctx = canvas.getContext("2d");
-// set default lineWidth
-const lineWidth = document.getElementById("line-width");
-ctx.lineWidth = lineWidth.value;
 
-const colors = [
-  "#ff3838",
-  "#ffb8b8",
-  "#c56cf0",
-  "#ff9f1a",
-  "#fff200",
-  "#32ff7e",
-  "#7efff5",
-  "#18dbff",
-  "#7d5fff",
-];
+const ctx = canvas.getContext("2d");
+ctx.lineWidth = lineWidth.value;
 
 let isPainting = false;
 
@@ -45,6 +36,16 @@ function finishPainting() {
 function onLineWidthChange(event) {
   ctx.lineWidth = event.target.value;
 }
+function onColorChange(event) {
+  ctx.strokeStyle = event.target.value;
+  ctx.fillStyle = event.target.value;
+}
+function onColorClick(event) {
+  const colorValue = event.target.dataset.color;
+  ctx.strokeStyle = colorValue;
+  ctx.fillStyle = colorValue;
+  color.value = colorValue;
+}
 
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", startPainting);
@@ -52,3 +53,6 @@ canvas.addEventListener("mouseup", finishPainting);
 canvas.addEventListener("mouseleave", finishPainting);
 
 lineWidth.addEventListener("change", onLineWidthChange);
+color.addEventListener("change", onColorChange);
+
+colorOptions.forEach((color) => color.addEventListener("click", onColorClick));
