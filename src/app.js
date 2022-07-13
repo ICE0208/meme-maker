@@ -10,16 +10,16 @@ const destroyBtn = document.getElementById("destroy-btn");
 const eraserBtn = document.getElementById("eraser-btn");
 const fileInput = document.getElementById("file");
 const textInput = document.getElementById("text");
+const saveBtn = document.getElementById("save");
 
-const dpr = window.devicePixelRatio;
-
-const CANVAS_WIDTH = 800 * dpr;
-const CANVAS_HEIGHT = 800 * dpr;
+const CANVAS_WIDTH = 800;
+const CANVAS_HEIGHT = 800;
 
 canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
 
 const ctx = canvas.getContext("2d");
+ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 ctx.lineWidth = lineWidth.value;
 ctx.lineCap = "round";
 
@@ -105,6 +105,13 @@ function onDoubleClick(event) {
   ctx.fillText(text, event.offsetX, event.offsetY);
   ctx.restore();
 }
+function onSaveClick() {
+  const url = canvas.toDataURL();
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "myDraing.png";
+  a.click();
+}
 
 canvas.addEventListener("dblclick", onDoubleClick);
 canvas.addEventListener("mousemove", onMove);
@@ -122,3 +129,4 @@ modeBtn.addEventListener("click", onMoveClick);
 destroyBtn.addEventListener("click", onDestroyClick);
 eraserBtn.addEventListener("click", onEraserClick);
 fileInput.addEventListener("change", onFileChange);
+saveBtn.addEventListener("click", onSaveClick);
